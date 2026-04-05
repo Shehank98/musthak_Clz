@@ -1,0 +1,70 @@
+/* ============================================================
+   DASHBOARD.CSS
+   ============================================================ */
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+.dashboard-full { grid-column: 1 / -1; }
+
+.quick-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+.quick-action-card {
+  flex: 1;
+  min-width: 160px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border);
+  padding: var(--space-4);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.quick-action-card:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  transform: translateY(-2px);
+}
+.quick-action-card .qa-icon { font-size: 1.75rem; margin-bottom: var(--space-2); }
+.quick-action-card .qa-label { font-size: var(--font-size-sm); font-weight: 600; color: var(--text-secondary); }
+
+.overdue-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  margin-bottom: var(--space-2);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.overdue-item .overdue-name { font-weight: 600; font-size: var(--font-size-sm); }
+.overdue-item .overdue-class { font-size: var(--font-size-xs); color: var(--text-muted); }
+.overdue-item .overdue-amount { font-weight: 700; color: var(--danger); font-size: var(--font-size-sm); }
+
+.today-class-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-2);
+  background: var(--surface-alt);
+}
+.today-class-time { font-size: var(--font-size-xs); color: var(--text-muted); min-width: 70px; font-weight: 600; }
+.today-class-info { flex: 1; }
+.today-class-name { font-weight: 600; font-size: var(--font-size-sm); }
+.today-class-teacher { font-size: var(--font-size-xs); color: var(--text-muted); }
+
+@media (max-width: 768px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+}

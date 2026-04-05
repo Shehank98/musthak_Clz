@@ -1,0 +1,127 @@
+/* ============================================================
+   PAYMENTS.CSS — Payment wizard, receipt, dues
+   ============================================================ */
+
+/* Payment wizard */
+.payment-summary-box {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+.payment-summary-box .ps-label {
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-1);
+}
+.payment-summary-box .ps-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 800;
+}
+.payment-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.payment-split-item {
+  background: rgba(255,255,255,0.15);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  text-align: center;
+}
+.payment-split-item .split-label { font-size: var(--font-size-xs); opacity: 0.8; }
+.payment-split-item .split-value { font-size: var(--font-size-lg); font-weight: 700; margin-top: var(--space-1); }
+
+/* Enrollment selection cards */
+.enrollment-select-card {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: var(--space-3);
+}
+.enrollment-select-card:hover { border-color: var(--primary); }
+.enrollment-select-card.selected {
+  border-color: var(--primary);
+  background: rgba(59,130,246,0.05);
+}
+.enrollment-select-card .esc-class { font-weight: 700; font-size: var(--font-size-base); }
+.enrollment-select-card .esc-details { font-size: var(--font-size-sm); color: var(--text-muted); margin-top: var(--space-1); }
+.enrollment-select-card .esc-meta { display: flex; gap: var(--space-4); margin-top: var(--space-2); flex-wrap: wrap; }
+.enrollment-select-card .esc-meta-item { font-size: var(--font-size-xs); }
+.enrollment-select-card .esc-meta-item span { font-weight: 600; }
+
+/* Receipt */
+.receipt-box {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.receipt-header { text-align: center; margin-bottom: var(--space-5); }
+.receipt-header h2 { font-size: var(--font-size-xl); color: var(--primary); }
+.receipt-number { font-family: var(--font-mono); font-size: var(--font-size-sm); color: var(--text-muted); }
+.receipt-divider { border: none; border-top: 2px dashed var(--border); margin: var(--space-4) 0; }
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) 0;
+  font-size: var(--font-size-sm);
+}
+.receipt-row.total {
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  color: var(--primary);
+  padding-top: var(--space-3);
+  margin-top: var(--space-2);
+  border-top: 2px solid var(--border);
+}
+.receipt-stamp {
+  text-align: center;
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: var(--font-size-xs);
+}
+
+/* Pending dues */
+.due-row-overdue td { background: #fff5f5; }
+.due-row-today td   { background: #fffbeb; }
+.due-row-paid td    { background: #f0fdf4; opacity: 0.7; }
+
+.due-badge-overdue { background: #fee2e2; color: #991b1b; }
+.due-badge-today   { background: #fef3c7; color: #92400e; }
+.due-badge-upcoming { background: #dbeafe; color: #1e40af; }
+
+/* Student search in payment */
+.student-search-result {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+.student-search-item {
+  padding: var(--space-3) var(--space-4);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-light);
+  transition: background var(--transition-fast);
+  font-size: var(--font-size-sm);
+}
+.student-search-item:last-child { border-bottom: none; }
+.student-search-item:hover { background: var(--surface-alt); }
+.student-search-item .ssi-name { font-weight: 600; }
+.student-search-item .ssi-meta { color: var(--text-muted); font-size: var(--font-size-xs); margin-top: 2px; }

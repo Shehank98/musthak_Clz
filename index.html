@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1e40af" />
+  <title>Musthak Class Management</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="assets/icons/icon-192.png" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/payments.css" />
+  <link rel="stylesheet" href="css/print.css" />
+
+  <!-- Firebase SDK v9 (compat for CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
+  <!-- QR Code libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
+  <!-- PDF Export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- Charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+<body>
+  <!-- Login screen (shown before auth) -->
+  <div id="login-screen" class="login-screen hidden">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-icon">📚</div>
+        <h1>Musthak Classes</h1>
+        <p>Management System</p>
+      </div>
+      <form id="login-form" class="login-form" novalidate>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="admin@example.com" required />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required />
+        </div>
+        <div id="login-error" class="alert alert-danger hidden"></div>
+        <button type="submit" class="btn btn-primary btn-full" id="login-btn">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main app shell (shown after auth) -->
+  <div id="app-shell" class="app-shell hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-logo">📚</span>
+        <span class="sidebar-title">Musthak CMS</span>
+        <button class="sidebar-close" id="sidebar-close">✕</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#/dashboard" class="nav-item" data-page="dashboard">
+          <span class="nav-icon">🏠</span><span class="nav-label">Dashboard</span>
+        </a>
+        <div class="nav-section-label">Academics</div>
+        <a href="#/students" class="nav-item" data-page="students">
+          <span class="nav-icon">👨‍🎓</span><span class="nav-label">Students</span>
+        </a>
+        <a href="#/teachers" class="nav-item" data-page="teachers">
+          <span class="nav-icon">👨‍🏫</span><span class="nav-label">Teachers</span>
+        </a>
+        <a href="#/subjects" class="nav-item" data-page="subjects">
+          <span class="nav-icon">📖</span><span class="nav-label">Subjects</span>
+        </a>
+        <a href="#/grades" class="nav-item" data-page="grades">
+          <span class="nav-icon">🎓</span><span class="nav-label">Grades</span>
+        </a>
+        <a href="#/classes" class="nav-item" data-page="classes">
+          <span class="nav-icon">🏫</span><span class="nav-label">Classes</span>
+        </a>
+        <div class="nav-section-label">Operations</div>
+        <a href="#/enrollments" class="nav-item" data-page="enrollments">
+          <span class="nav-icon">📋</span><span class="nav-label">Enrollments</span>
+        </a>
+        <a href="#/payments" class="nav-item" data-page="payments">
+          <span class="nav-icon">💰</span><span class="nav-label">Payments</span>
+        </a>
+        <a href="#/attendance" class="nav-item" data-page="attendance">
+          <span class="nav-icon">✅</span><span class="nav-label">Attendance</span>
+        </a>
+        <div class="nav-section-label">Analytics</div>
+        <a href="#/reports" class="nav-item" data-page="reports">
+          <span class="nav-icon">📊</span><span class="nav-label">Reports</span>
+        </a>
+        <div class="nav-section-label">System</div>
+        <a href="#/settings" class="nav-item" data-page="settings">
+          <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn btn-outline btn-sm" id="logout-btn">Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- Overlay for mobile sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Main content area -->
+    <div class="main-content">
+      <!-- Top bar -->
+      <header class="topbar">
+        <button class="topbar-menu-btn" id="menu-toggle">☰</button>
+        <div class="topbar-breadcrumb" id="page-title">Dashboard</div>
+        <div class="topbar-actions">
+          <button class="btn btn-primary btn-sm" id="quick-payment-btn">+ Payment</button>
+        </div>
+      </header>
+
+      <!-- Page content -->
+      <main id="content-area" class="content-area">
+        <div class="loading-spinner" id="page-loader">
+          <div class="spinner"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Student portal (public, no login) -->
+  <div id="portal-screen" class="portal-screen hidden"></div>
+
+  <!-- Global modal -->
+  <div class="modal-backdrop hidden" id="modal-backdrop">
+    <div class="modal" id="global-modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Modal</h2>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer" id="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Print-only receipt area -->
+  <div id="print-area" class="print-only"></div>
+
+  <!-- App JS modules (order matters) -->
+  <script src="js/config.js"></script>
+  <script src="js/firebase/firebase-init.js"></script>
+  <script src="js/firebase/auth.js"></script>
+  <script src="js/firebase/storage.js"></script>
+  <script src="js/utils/formatters.js"></script>
+  <script src="js/utils/validators.js"></script>
+  <script src="js/utils/dateHelpers.js"></script>
+  <script src="js/utils/ui.js"></script>
+  <script src="js/services/settingsService.js"></script>
+  <script src="js/services/studentService.js"></script>
+  <script src="js/services/teacherService.js"></script>
+  <script src="js/services/subjectService.js"></script>
+  <script src="js/services/gradeService.js"></script>
+  <script src="js/services/classService.js"></script>
+  <script src="js/services/dueScheduleService.js"></script>
+  <script src="js/services/enrollmentService.js"></script>
+  <script src="js/services/paymentService.js"></script>
+  <script src="js/services/attendanceService.js"></script>
+  <script src="js/notifications/emailjs.js"></script>
+  <script src="js/notifications/whatsapp.js"></script>
+  <script src="js/qr/qrGenerator.js"></script>
+  <script src="js/qr/qrScanner.js"></script>
+  <script src="js/reports/csvExport.js"></script>
+  <script src="js/reports/pdfExport.js"></script>
+  <script src="js/pages/login.js"></script>
+  <script src="js/pages/dashboard.js"></script>
+  <script src="js/pages/students.js"></script>
+  <script src="js/pages/teachers.js"></script>
+  <script src="js/pages/subjects.js"></script>
+  <script src="js/pages/grades.js"></script>
+  <script src="js/pages/classes.js"></script>
+  <script src="js/pages/enrollments.js"></script>
+  <script src="js/pages/payments.js"></script>
+  <script src="js/pages/attendance.js"></script>
+  <script src="js/pages/reports.js"></script>
+  <script src="js/pages/settings.js"></script>
+  <script src="js/pages/studentPortal.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

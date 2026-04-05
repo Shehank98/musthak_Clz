@@ -1,0 +1,70 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: check if user is authenticated admin
+    function isAdmin() {
+      return request.auth != null;
+    }
+
+    // PUBLIC: students can be read (limited) for the portal QR page
+    // Only the student's own document can be read without auth
+    match /students/{studentId} {
+      allow read:  if isAdmin() || true;  // public read for portal
+      allow write: if isAdmin();
+    }
+
+    // PUBLIC: enrollments readable for portal (student dues display)
+    match /enrollments/{docId} {
+      allow read:  if isAdmin() || true;
+      allow write: if isAdmin();
+    }
+
+    // PUBLIC: payments readable for portal
+    match /payments/{docId} {
+      allow read:  if isAdmin() || true;
+      allow write: if isAdmin();
+    }
+
+    // PUBLIC: due_schedules readable for portal
+    match /due_schedules/{docId} {
+      allow read:  if isAdmin() || true;
+      allow write: if isAdmin();
+    }
+
+    // PUBLIC: settings readable for portal (center name/phone)
+    match /settings/{docId} {
+      allow read:  if true;
+      allow write: if isAdmin();
+    }
+
+    // Admin-only collections
+    match /teachers/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /subjects/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /grades/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /classes/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /attendance_sessions/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /attendance_records/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /notifications_log/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /waiting_list/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /users/{docId} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

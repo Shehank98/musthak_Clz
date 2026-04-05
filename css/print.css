@@ -1,0 +1,59 @@
+/* ============================================================
+   PRINT.CSS — @media print: receipt + QR card
+   ============================================================ */
+
+.print-only { display: none; }
+
+@media print {
+  /* Hide everything */
+  body > * { display: none !important; }
+
+  /* Show only print-area */
+  #print-area {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 99999;
+    padding: 20px;
+  }
+
+  /* Receipt print styles */
+  .print-receipt {
+    max-width: 400px;
+    margin: 0 auto;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: black;
+  }
+  .print-receipt .pr-center { text-align: center; }
+  .print-receipt .pr-title  { font-size: 18px; font-weight: bold; margin-bottom: 4px; }
+  .print-receipt .pr-sub    { font-size: 11px; color: #555; }
+  .print-receipt .pr-line   { border: none; border-top: 1px dashed #888; margin: 8px 0; }
+  .print-receipt .pr-row    { display: flex; justify-content: space-between; margin: 4px 0; }
+  .print-receipt .pr-label  { color: #555; }
+  .print-receipt .pr-value  { font-weight: bold; }
+  .print-receipt .pr-total  { font-size: 14px; font-weight: 900; }
+  .print-receipt .pr-stamp  { text-align: center; font-size: 10px; color: #888; margin-top: 12px; }
+
+  /* QR card print styles */
+  .print-qr-card {
+    width: 200px;
+    text-align: center;
+    border: 2px solid black;
+    padding: 12px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+  }
+  .print-qr-card .pqr-center-name { font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; color: #555; }
+  .print-qr-card .pqr-qr { margin: 0 auto; }
+  .print-qr-card .pqr-name { font-size: 12px; font-weight: bold; margin-top: 8px; }
+  .print-qr-card .pqr-id   { font-size: 9px; color: #888; margin-top: 2px; font-family: monospace; }
+
+  /* Grid of QR cards for bulk printing */
+  .print-qr-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
