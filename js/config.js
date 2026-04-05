@@ -29,6 +29,14 @@ const APP_CONFIG = {
   version:                 "1.0.0"
 };
 
+// Default super admin — auto-created on first load
+// Change credentials in Settings → Admin Account after going live
+const DEFAULT_ADMIN = {
+  email:    "admin@gmail.com",
+  password: "admin123"
+};
+
 // Expose globally
 window.FIREBASE_CONFIG = FIREBASE_CONFIG;
-window.APP_CONFIG = APP_CONFIG;
+window.APP_CONFIG      = APP_CONFIG;
+window.DEFAULT_ADMIN   = DEFAULT_ADMIN;

@@ -3,6 +3,21 @@
 // ============================================================
 
 (function() {
+  // Auto-create default admin on first load (silently ignored on subsequent loads)
+  async function _bootstrapAdmin() {
+    try {
+      await AuthService.createAdmin(DEFAULT_ADMIN.email, DEFAULT_ADMIN.password);
+    } catch (e) {
+      // "email-already-in-use" = already created, that's fine
+      // Any other error (e.g. Firebase not yet configured) = ignore silently
+    }
+  }
+  _bootstrapAdmin();
+
+  // Pre-fill login form with default credentials
+  document.getElementById('login-email').value    = DEFAULT_ADMIN.email;
+  document.getElementById('login-password').value = DEFAULT_ADMIN.password;
+
   // Register all pages
   Router.register('dashboard',   (el, p) => DashboardPage.load(el, p));
   Router.register('students',    (el, p) => StudentsPage.load(el, p));
